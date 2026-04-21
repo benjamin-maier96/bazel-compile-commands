@@ -12,6 +12,11 @@
 
 #include <google/protobuf/text_format.h>
 
+// MSVC CRT defines environ as a macro (*__p__environ()), which breaks the
+// generated protobuf accessor for the 'environ' field in stardoc_output.proto.
+#ifdef environ
+  #undef environ
+#endif
 #include "src/main/protobuf/analysis_v2.pb.h"
 
 namespace {
