@@ -5,6 +5,11 @@
 #include <string_view>
 #include <vector>
 
+#ifdef _WIN32
+#include <fcntl.h>
+#include <io.h>
+#endif
+
 #include <google/protobuf/text_format.h>
 
 #include "src/main/protobuf/analysis_v2.pb.h"
@@ -221,6 +226,9 @@ main(int argc, char** argv)
   } else if (aquery_iter != std::end(arguments)) {
     analysis::ActionGraphContainer agc;
     google::protobuf::TextFormat::ParseFromString(aquery_textproto, &agc);
+#ifdef _WIN32
+    _setmode(_fileno(stdout), _O_BINARY);
+#endif
     agc.SerializePartialToOstream(&std::cout);
     return 0;
   } else {
