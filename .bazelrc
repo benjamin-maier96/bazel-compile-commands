@@ -13,6 +13,9 @@ build --enable_runfiles
 build:cl --cxxopt=/std:c++17
 build:gnu --cxxopt=-std=c++17
 
+# Disable Boost's MSVC auto-link pragma; Bazel handles linking explicitly.
+build:cl --cxxopt=-DBOOST_ALL_NO_LIB
+
 build:gnu --copt=-pedantic
 build:gnu --copt=-Wall
 build:gnu --copt=-Wextra
