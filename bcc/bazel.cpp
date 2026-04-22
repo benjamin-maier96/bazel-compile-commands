@@ -36,6 +36,9 @@ bazel_info(std::filesystem::path const& bazel_path,
 
   auto line = std::string{};
   std::getline(outs, line);
+  if (!line.empty() && line.back() == '\r') {
+    line.pop_back();
+  }
   bazel_proc.wait();
   auto const rc = bazel_proc.exit_code();
   if (rc != 0) {

@@ -8,7 +8,7 @@
 #include <boost/json.hpp>
 
 #ifdef environ
-#  undef environ  // MSVC CRT defines environ as a macro; conflicts with a proto field name.
+#undef environ // MSVC CRT defines environ as a macro; conflicts with a proto field name.
 #endif
 #include "src/main/protobuf/analysis_v2.pb.h"
 
