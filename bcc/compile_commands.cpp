@@ -102,13 +102,6 @@ compile_commands_builder::execution_root(std::filesystem::path value)
   return *this;
 }
 
-compile_commands_builder&
-compile_commands_builder::verbose(bool value)
-{
-  verbose_ = value;
-  return *this;
-}
-
 boost::json::array
 compile_commands_builder::build(analysis::ActionGraphContainer const& action_graph) const
 {
@@ -148,20 +141,12 @@ compile_commands_builder::build(analysis::ActionGraphContainer const& action_gra
           std::error_code ec;
           auto const full_path = execution_root_ / file.value();
           auto const resolved = std::filesystem::canonical(full_path, ec);
-          if (ec) {
-            if (verbose_) {
-              std::cerr << "resolve: canonical(" << full_path.generic_string() << ") failed: " << ec.message() << "\n";
-            }
-          } else {
+          if (!ec) {
             auto resolved_lower = resolved.generic_string();
             auto workspace_lower = workspace_path_.generic_string();
             std::transform(resolved_lower.begin(), resolved_lower.end(), resolved_lower.begin(), [](unsigned char c){ return std::tolower(c); });
             std::transform(workspace_lower.begin(), workspace_lower.end(), workspace_lower.begin(), [](unsigned char c){ return std::tolower(c); });
-            if (!starts_with(resolved_lower, workspace_lower)) {
-              if (verbose_) {
-                std::cerr << "resolve: " << resolved.generic_string() << " not inside workspace " << workspace_path_.generic_string() << "\n";
-              }
-            } else {
+            if (starts_with(resolved_lower, workspace_lower)) {
               file = resolved.generic_string();
             }
           }

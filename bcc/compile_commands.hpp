@@ -30,15 +30,12 @@ public:
   compile_commands_builder& execution_root(std::filesystem::path value);
   /// Set replacements.
   compile_commands_builder& replacements(bcc::replacements value);
-  /// Set verbose logging.
-  compile_commands_builder& verbose(bool value);
   /// Turn actions from a bazel aquery into a compile_commands.json format.
   boost::json::array build(analysis::ActionGraphContainer const& action_graph) const;
 
 private:
   bool command_{ false };
   bool resolve_{ false };
-  bool verbose_{ false };
   std::optional<std::string> compiler_{};
   bcc::replacements replacements_{};
   std::filesystem::path workspace_path_{};
