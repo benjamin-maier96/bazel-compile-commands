@@ -139,8 +139,7 @@ compile_commands_builder::build(analysis::ActionGraphContainer const& action_gra
       if (file.has_value()) {
         if (resolve_) {
           std::error_code ec;
-          auto const full_path = execution_root_ / file.value();
-          auto const resolved = std::filesystem::canonical(full_path, ec);
+          auto const resolved = std::filesystem::canonical(execution_root_ / file.value(), ec);
           if (!ec) {
             auto resolved_lower = resolved.generic_string();
             auto workspace_lower = workspace_path_.generic_string();
